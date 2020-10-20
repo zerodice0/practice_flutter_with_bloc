@@ -3,6 +3,7 @@ import 'package:flutter_component_structure_practice/components/data_list_view.d
 import 'package:flutter_component_structure_practice/components/namecard.dart';
 import 'package:flutter_component_structure_practice/widgets/bloc/user_list_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_component_structure_practice/widgets/models/user.dart';
 
 class UserList extends StatefulWidget {
   final VoidCallback refresh;
@@ -24,6 +25,40 @@ class _UserListState extends State<UserList> {
     super.initState();
     _userListBloc = context.bloc<UserListBloc>();
   }
+
+  Future<void> _showDialog(User user) async => showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            "Name Card",
+            textAlign: TextAlign.center,
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(user.avatar),
+                    Column(
+                      children: [
+                        Text(user.name),
+                        Text(user.createdAt),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          actions: [
+            RaisedButton(
+              child: Text("Hello, ${user.name}"),
+              onPressed: () {},
+            )
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +96,9 @@ class _UserListState extends State<UserList> {
                             ),
                           )
                           .toList(),
+                      onTap: (index) {
+                        _showDialog(state.userList[index]);
+                      },
                     ),
                   )
                 ],
