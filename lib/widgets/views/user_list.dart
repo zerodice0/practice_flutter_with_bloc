@@ -5,6 +5,13 @@ import 'package:flutter_component_structure_practice/widgets/bloc/user_list_bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserList extends StatefulWidget {
+  final VoidCallback refresh;
+
+  const UserList({
+    Key key,
+    this.refresh,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _UserListState();
 }
@@ -30,16 +37,33 @@ class _UserListState extends State<UserList> {
             );
           case UserListStatus.success:
             return Expanded(
-              child: DataListView(
-                datas: state.userList
-                    .map(
-                      (e) => NameCard(
-                        avartar: e.avatar,
-                        name: e.name,
-                        createdAt: e.createdAt,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: RaisedButton(
+                      shape: CircleBorder(),
+                      child: Icon(Icons.refresh),
+                      onPressed: () => _userListBloc.add(
+                        UserListFetched(),
                       ),
-                    )
-                    .toList(),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 9,
+                    child: DataListView(
+                      datas: state.userList
+                          .map(
+                            (e) => NameCard(
+                              avartar: e.avatar,
+                              name: e.name,
+                              createdAt: e.createdAt,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  )
+                ],
               ),
             );
           default:
