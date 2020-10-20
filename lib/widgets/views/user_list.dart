@@ -34,27 +34,22 @@ class _UserListState extends State<UserList> {
             textAlign: TextAlign.center,
           ),
           content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(user.avatar),
-                    Column(
-                      children: [
-                        Text(user.name),
-                        Text(user.createdAt),
-                      ],
-                    )
-                  ],
-                )
-              ],
+            child: SizedBox(
+              width: 300,
+              height: 80,
+              child: NameCard(
+                name: user.name,
+                avartar: user.avatar,
+                createdAt: user.createdAt,
+              ),
             ),
           ),
           actions: [
             RaisedButton(
               child: Text("Hello, ${user.name}"),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             )
           ],
         ),
